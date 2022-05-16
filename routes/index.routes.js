@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const { populate } = require("../models/Pet.model");
 const Pet = require("../models/Pet.model");
 const User = require('../models/User.model');
 const saltRounds = 10;
@@ -15,16 +16,22 @@ router.get("/home", (req, res, next) => {
 });
 
 // USER-PROFILE
-router.get('/profile',  (req, res, next) => {
-  res.render('user-profile'/* , { user:req.session.currentUser} */);
+router.get('/profile', (req, res, next) => {
+ User.findById(req.session.currentUser._id)
+ .populate("pets")
+    .then((userFound) => {
+      console.log(userFound)
+      res.render('user-profile', {user:userFound});
+    })
+    .catch((err) => next(err));
 });
 
 
 // PET-PROFILE
-router.get('/pet-profile',  (req, res, next) => {
-  res.render('pet-profile'/* , { user:req.session.currentUser} */);
+/* router.get('/pet-profile',  (req, res, next) => {
+  res.render('pet-profile');
 });
-
+ */
 
 // SIGN UP 
 router.get('/signup', (req, res, next) => {
@@ -86,7 +93,7 @@ router.post('/login',  (req, res, next) => {
           req.app.locals.currentUser = user; 
 
         console.log(req.session);
-        res.render('user-profile', { user });
+        res.redirect('/profile');
       } else {
         res.render('auth/login', { errorMessage: 'Incorrect password' });
       }
@@ -107,23 +114,62 @@ router.get('/logout', (req, res, next) => {
 //Add a pet 
 
 router.get("/add-pet", (req, res, next) => 
-    User.find()
+  User.find()
     .then((users) => res.render("add-pet", {users}))
     );
 
     router.post("/add-pet", (req, res, next) => {
-      const { name, humans } = req.body;
-      Pet.create({ name, humans })
-        .then(() => {
-            res.redirect('/pet-profile');
+     const userId = req.session.currentUser._id
+
+      const { name } = req.body;
+      Pet.create({ name, humans:userId })
+        .then((createdPet) => {
+            console.log(createdPet)
+       return User.findByIdAndUpdate(userId, {$push: {pets:createdPet._id}}, {new:true})
+        .then((updatedUser) => {
+          res.redirect('/profile');
         })
+        })
+
         .catch((err) => res.redirect('/add-pet'));
     });
   
-    router.get('/pet-profile', (req, res, next) => {
-      Pet.find({})
-        .then((pets) => {
-          res.render('/pet-profile', { pets });
+    // EDIT PET
+
+    router.get('/pet/:id/edit', (req, res, next) => {
+      const { id } = req.params;
+      Pet.findById(id)
+        .then((pet) =>  res.render('edit-pet', {pet}))
+      
+        .catch((err) => next(err));
+    });
+
+    router.post('/pet/:id/edit', (req, res, next) => {
+      const { id } = req.params;
+      const { name} = req.body;
+    
+      Pet.findByIdAndUpdate(id, { name })
+        .then((pet) => res.redirect('/profile'))
+        .catch((err) => next(err));
+    });
+    
+    //DELETE PET
+  router.post('/pet/:id/delete', (req, res, next) => {
+    console.log("getting here")
+    const { id } = req.params;
+    console.log("to be deleted", id)
+    Pet.findByIdAndRemove(id)
+      .then(() => res.redirect('/profile'))
+      .catch((err) => next(err));
+  });
+
+    //PET PORFILE WITH ID 
+    router.get('/pet-profile/:id', (req, res, next) => {
+      const { id } = req.params;
+      Pet.findById(id)
+      .populate("humans")
+        .then((pet) => {
+          res.render('pet-profile', pet );
         })
         .catch((err) => next(err));
     });

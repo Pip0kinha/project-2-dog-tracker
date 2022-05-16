@@ -13,7 +13,7 @@ const petSchema = new Schema(
     imageUrl: {
         type: String,
         default:
-          "/public/images/pet-profile-default.png",
+          "https://pro2-bar-s3-cdn-cf.myportfolio.com/c728a553-9706-473c-adca-fa2ea3652db5/12e68d7c-545d-4718-a8ea-fa18b078ca94_rw_1200.jpg?h=c457494d606f389562232d85f277cdfd",
       },
     
   },

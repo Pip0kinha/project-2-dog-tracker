@@ -1,9 +1,26 @@
-<h1>PET PROFILE</h1>
+<h1>{{name}} Profile</h1>
 
 <div>
-    {{#if pet}}
-    <h1>{{name}}</h1>
-    <img src="{{imageUrl}}" alt="pet photo" style="width:100px">
-    <p>{{tasks}}</p>
-    {{/if}}
+    <img src="{{this.imageUrl}}" alt="pet photo" style="width:100px">
+    <h2>Humans:</h2>
+    <p>{{this.humans}}</p>
+    <a href= '/pet/{{_id}}/add-user'> + Add human</a>
+{{!--     <p>{{this.tasks}}</p> --}}
+<div id="myDIV" class="header">
+  <h3>{{name}}'s To Do List</h3>
+  <input type="text" id="myInput" placeholder="Title...">
+  <span onclick="newElement()" class="addBtn"> + Add</span>
 </div>
+
+<ul id="myUL">
+  <li>Give food</li>
+  <li class="checked">Give medicine</li>
+  <li>Take for a walk</li>
+  <li>Take to the vet</li>
+
+</ul>
+
+   
+</div>
+
+<script src="/js/script-todo.js"></script>

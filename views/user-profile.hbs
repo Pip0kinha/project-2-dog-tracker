@@ -1,9 +1,29 @@
-<h1>USER PROFILE</h1>
-{{#if user}}
+<h1>{{user.username}} Profile</h1>
+<img src="{{user.imageUrl}}" alt="user photo" style="width: 60px;px;height: 60px;px;">
 
   <p>Welcome {{user.username}}</p>
 
-{{/if}}
+<h2>Your Pets</h2>
+{{#if user.pets}}
+{{#each user.pets}}
+<h3>{{this.name}}</h3>
+ <a href='/pet-profile/{{_id}}'> <img src="{{this.imageUrl}}" alt="pet photo" style="width: 60px;px;height: 60px;px;"> </a>
+<br>
+<a href= '/pet/{{_id}}/edit'> Edit pet</a>
 
-<h2>Your Pet</h2>
- <a href='/pet-profile'><img src="{{user.pets.imageUrl}}" alt="pet photo" style="width: 60px;px;height: 60px;px;"></a>
+<form action='/pet/{{_id}}/delete' method='post'>
+  <button type='submit'>Delete</button>
+</form>
+
+
+ {{/each}}
+ {{/if}}
+
+{{!-- 
+<br>
+<a href= 'pet/{{_id}}/edit'> Edit pet</a>
+ 
+<form action='pet/{{_id}}/delete' method='post'>
+  <button type='submit'>Delete</button>
+</form>
+<br> --}}

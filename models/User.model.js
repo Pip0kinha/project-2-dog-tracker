@@ -17,7 +17,7 @@ const userSchema = new Schema(
     imageUrl: {
       type: String,
       default:
-        "/public/images/user-profile-default.png",
+        "https://st.depositphotos.com/1779253/5140/v/380/depositphotos_51405259-stock-illustration-male-avatar-profile-picture-use.jpg?forcejpeg=true",
     },
     
   },
@@ -30,3 +30,4 @@ const userSchema = new Schema(
 const User = model("User", userSchema);
 
 module.exports = User;
+
