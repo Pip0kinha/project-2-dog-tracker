@@ -1,0 +1,19 @@
+
+<h1>Add Pet</h1>
+<form action="/add-pet" method="POST">
+   <label> Name
+      <input type="text" name="name">
+   </label>
+   <label for="humans">Humans</label>
+  <select name="humans" id="humans" multiple size="5">
+      {{#each users}}
+  <option value={{this._id}}>{{this.username}}</option>
+  {{/each}}
+</select>
+
+   <button type="submit">Submit</button>
+</form>
+
+{{#if errorMessage}}
+   {{errorMessage}}
+{{/if}}

@@ -9,6 +9,28 @@
   </head>
 
   <body>
+ <nav>
+      <ul>
+        <ul id='to-right'>
+          {{#if user}}
+             {{!-- |
+            <a href='/edit-profile'>Edit Profile</a> --}}
+            |
+            <a href='/add-pet'>Add a Pet </a>
+           {{!--  |
+            <a href='/delete'>Delete Profile</a> --}}
+            |
+            <a href='/logout'>Logout</a>
+  
+          {{else}}
+            <a href='/signup'>Signup</a>
+            |
+            <a href='/login'>Login</a>
+          {{/if}}
+
+        </ul>
+      </ul>
+    </nav>
 
     {{{body}}}
 

@@ -1,0 +1,9 @@
+<h1>USER PROFILE</h1>
+{{#if user}}
+
+  <p>Welcome {{user.username}}</p>
+
+{{/if}}
+
+<h2>Your Pet</h2>
+ <a href='/pet-profile'><img src="{{user.pets.imageUrl}}" alt="pet photo" style="width: 60px;px;height: 60px;px;"></a>

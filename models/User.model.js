@@ -5,9 +5,21 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      // unique: true -> Ideally, should be unique, but its up to you
+      unique: true,
+      required: [true, 'Please input username'],
     },
-    password: String,
+    passwordHash: { 
+      type: String,
+      required: [true, 'Please input a password'],
+    },
+
+    pets: [{ type: Schema.Types.ObjectId, ref: "Pet" }],
+    imageUrl: {
+      type: String,
+      default:
+        "/public/images/user-profile-default.png",
+    },
+    
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
