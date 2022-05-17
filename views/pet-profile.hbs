@@ -1,17 +1,17 @@
-<h1>{{name}} Profile</h1>
+<h1>{{pet.name}} Profile</h1>
 <br>
 
 <div>
-    <img src="{{this.imageUrl}}" alt="pet photo" style="width:100px">
+    <img src="{{pet.imageUrl}}" alt="pet photo" style="width:100px">
     <br>
     <h2>Humans:</h2>
-   {{#each this.humans}}
+   {{#each pet.humans}}
     <p>{{this.username}}</p>
      {{/each}}
   <br>
-  <h3>{{name}}'s To Do List</h3>
+  <h3>{{pet.name}}'s To Do List</h3>
 
-<form action="/pet-profile/{{_id}}" method="POST">
+<form action="/pet-profile/{{pet._id}}" method="POST">
 <label> New Task
       <input type="text" name="content">
    </label>
@@ -22,10 +22,10 @@
 <br>
 <h3>Current Tasks:</h3>
 
- {{#each tasks}}
+ {{#each pet.tasks}}
  <ul> 
     <li>{{content}}</li>
-    <form action='/pet-profile/{{_id}}' method='post'>
+    <form action='/pet-profile/{{@root.pet._id}}/tasks/{{_id}}/delete' method='post'>
   <button class="button-34" role="button" type='submit'>x</button>
 </form>
     </ul>

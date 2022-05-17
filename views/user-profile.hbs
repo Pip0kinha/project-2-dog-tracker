@@ -1,7 +1,11 @@
+<div id="user-profile">
+<div id="user-profile-firstDiv"> 
+<img src="{{user.imageUrl}}" alt="user photo" style="width: 120x;px;height: 120px;px;">
 <h1>{{user.username}} Profile</h1>
+</div>
 {{!--  <a href='/user/{{user._id}}/edit'> --}}
  
- <img src="{{user.imageUrl}}" alt="user photo" style="width: 60px;px;height: 60px;px;">
+ 
  
 {{!--  </a> --}}
 
@@ -11,7 +15,7 @@
 {{#if user.pets}}
 {{#each user.pets}}
 <h3>{{this.name}}</h3>
- <a href='/pet-profile/{{_id}}'> <img src="{{this.imageUrl}}" alt="pet photo" style="width: 60px;px;height: 60px;px;"> </a>
+ <a href='/pet-profile/{{_id}}'> <img src="{{this.imageUrl}}" alt="pet photo" style="width: 90px;px;height: 90px;px;"> </a>
 <br>
 <br>
 <a class="button-34" role="button" href= '/pet/{{_id}}/edit'> Edit pet</a>
@@ -25,11 +29,4 @@
  {{/each}}
  {{/if}}
 
-{{!-- 
-<br>
-<a href= 'pet/{{_id}}/edit'> Edit pet</a>
- 
-<form action='pet/{{_id}}/delete' method='post'>
-  <button type='submit'>Delete</button>
-</form>
-<br> --}}
+</div>

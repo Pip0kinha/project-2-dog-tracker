@@ -9,7 +9,6 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 const Task = require("../models/Task.model");
 const saltRounds = 10;
 
-
 //HOME
 router.get("/", (req, res, next) => {
   res.render("home");
@@ -52,10 +51,11 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
         });
       })
       .then((user) => {
-        req.session.currentUser = user
-        req.app.locals.user = user
-        res.redirect("/profile")})
-    
+        req.session.currentUser = user;
+        req.app.locals.user = user;
+        res.redirect("/profile");
+      })
+
       .catch((err) => {
         if (err instanceof mongoose.Error.ValidationError) {
           res.status(500).redirect("/signup", { errorMessage: err.message });
@@ -100,7 +100,7 @@ router.post("/login", (req, res, next) => {
 });
 
 router.get("/logout", (req, res, next) => {
-  req.app.locals.user = null
+  req.app.locals.user = null;
   req.session.destroy((err) => {
     if (err) next(err);
     res.redirect("/");
@@ -126,7 +126,6 @@ router.post("/user/:id/edit", (req, res, next) => {
     .catch((err) => next(err));
 });
  */
-
 
 //PET routes
 
@@ -172,11 +171,11 @@ router.post("/pet/:id/edit", async (req, res, next) => {
   let deletedUser;
   let pet = await Pet.findById(id);
 
-  if (removeHuman && removeHuman.length > 0){
-    deletedUser = await User.findOne({ username: removeHuman});
+  if (removeHuman && removeHuman.length > 0) {
+    deletedUser = await User.findOne({ username: removeHuman });
   }
 
-  if (deletedUser){
+  if (deletedUser) {
     User.findByIdAndUpdate(deletedUser._id, { $pull: { pets: pet._id } })
       .then(() => {
         return Pet.findByIdAndUpdate(id, {
@@ -195,7 +194,8 @@ router.post("/pet/:id/edit", async (req, res, next) => {
 
   if (
     newUser &&
-    pet.humans.filter((human) => human.str === newUser._id.str).length === 0
+    pet.humans.filter((human) => human.toString() === newUser._id.toString())
+      .length === 0
   ) {
     User.findByIdAndUpdate(newUser._id, { $push: { pets: pet._id } })
       .then(() => {
@@ -231,26 +231,25 @@ router.get("/pet-profile/:id", (req, res, next) => {
     .populate("humans")
     .populate("tasks")
     .then((pet) => {
-      console.log(pet)
-      res.render("pet-profile", pet);
+      console.log(pet);
+      res.render("pet-profile", { pet, user: req.session.currentUser });
     })
     .catch((err) => next(err));
 });
-
 
 //ADD TASK
 
 router.post("/pet-profile/:id", (req, res, next) => {
   const { id } = req.params;
   const { content } = req.body;
-  Task.create ({content})
-     .then((createdTask) => {
+  Task.create({ content })
+    .then((createdTask) => {
       console.log(createdTask);
       return Pet.findByIdAndUpdate(
         id,
         { $push: { tasks: createdTask._id } },
-        { new: true })
-        .then((pet) => {
+        { new: true }
+      ).then((pet) => {
         res.redirect(`/pet-profile/${id}`);
       });
     })
@@ -258,18 +257,15 @@ router.post("/pet-profile/:id", (req, res, next) => {
     .catch((err) => res.redirect(`/pet-profile/${id}`));
 });
 
-//DELETE TASK 
+//DELETE TASK
 
-/* router.post("/pet-profile/:id", async (req, res, next) => {
- console.log("getting here");
-  const { id } = req.params;
-  const { content } = req.body;
+router.post("/pet-profile/:id/tasks/:taskid/delete", async (req, res, next) => {
+  console.log("getting here");
+  const { id, taskid } = req.params;
   let deletedTask;
-  let pet = await Pet.findById(id);
-  console.log("to be deleted", id);
-  Pet.findByIdAndUpdate(deletedTask._id, { $pull: { tasks: tasks._id } })
-    .then(() => res.redirect("/pet-profile/${id}"))
+  Pet.findByIdAndUpdate(id, { $pull: { tasks: taskid } })
+    .then(() => res.redirect(`/pet-profile/${id}`))
     .catch((err) => next(err));
-}); */
- 
+});
+
 module.exports = router;

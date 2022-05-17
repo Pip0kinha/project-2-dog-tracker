@@ -9,8 +9,21 @@ body {
 a {
   color: #F1F7ED;
   text-decoration: none;
+}
 
-  
+span {
+  color: #F1F7ED;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+
+nav {
+  background-color: #7209B7;
+  height: 50px;
+  display: flex;
+  justify-content: right;
+  padding-right: 80px;
 }
 
 h1 {
@@ -28,16 +41,6 @@ h3 {
   font-weight: bold;
 }
 
-
-nav {
-  background-color: #7209B7;
-  height: 50px;
-  display: flex;
-  justify-content: right;
-  padding-right: 80px;
-}
-
-/* CSS */
 .button-34 {
   background: #7209B7;
   border-radius: 999px;
@@ -58,4 +61,56 @@ nav {
   width: fit-content;
   word-break: break-word;
   border: 0;
+}
+
+#home {
+height: 100%;
+display: flex;
+}
+
+#home h1 {
+  font-size: 110px;
+  display: flex;
+  align-items: center;
+}
+
+#home img {
+  position: absolute;
+  margin-left: 500px;
+}
+
+#home-text {
+  margin-top: 297px;
+  padding: 50px;
+  padding-left: 140px;
+  padding-right: 140px;
+  border-top-style: solid;
+  border-color: #7209B7;
+  border-width: 8px;
+ 
+}
+
+#home-div-button {
+  text-align: center;
+}
+
+#home-a {
+padding-left: 80px;
+padding-right: 80px;
+font-size: 18px;
+}
+ 
+#user-profile h1 {
+font-size: 50px;
+}
+
+#user-profile-firstDiv {
+  display: flex;
+  margin: 50px;
+  
+  
+}
+#user-profile-firstDiv h1 {
+  padding-left: 30px;
+  
 }
