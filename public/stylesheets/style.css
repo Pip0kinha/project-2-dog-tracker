@@ -20,10 +20,19 @@ span {
 
 nav {
   background-color: #7209B7;
-  height: 50px;
+  height: 60px;
   display: flex;
   justify-content: right;
   padding-right: 80px;
+  
+}
+
+nav img {
+  justify-content: left;
+  align-items: center;
+  height: 50px;
+  margin-top: 5px;
+  margin-right: auto;
 }
 
 h1 {
@@ -81,13 +90,17 @@ display: flex;
 
 #home-text {
   margin-top: 297px;
-  padding: 50px;
-  padding-left: 140px;
-  padding-right: 140px;
+  padding: 70px;
+  padding-left: 160px;
+  padding-right: 160px;
   border-top-style: solid;
   border-color: #7209B7;
   border-width: 8px;
  
+}
+
+#home h3 {
+  color: #727072;
 }
 
 #home-div-button {

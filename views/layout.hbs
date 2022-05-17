@@ -11,14 +11,17 @@
 
   <body>
  <nav>
+   <img src="/images/logo.png" alt="pet photo" style="width:100px">
       <ul>
-        <ul id='to-right'>
+        
+        <ul>
+          <a href='/home'>Home</a>
+            <span>|</span>
          {{#if user}}
           
            {{!--  |
             <a href='/delete'>Delete Profile</a> --}}
-            <a href='/home'>Home</a>
-            <span>|</span>
+            
             <a href='/profile'>User Profile</a>
             <span>|</span>
             <a href='/logout'>Logout</a>
