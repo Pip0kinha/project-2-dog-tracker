@@ -1,10 +1,14 @@
 const router = require("express").Router();
-const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
+const bcrypt = require("bcryptjs");
+const mongoose = require("mongoose");
 const { populate } = require("../models/Pet.model");
 const Pet = require("../models/Pet.model");
-const User = require('../models/User.model');
+const User = require("../models/User.model");
+const isLoggedOut = require("../middleware/isLoggedOut");
+const isLoggedIn = require("../middleware/isLoggedIn");
+const Task = require("../models/Task.model");
 const saltRounds = 10;
+
 
 //HOME
 router.get("/", (req, res, next) => {
@@ -16,35 +20,27 @@ router.get("/home", (req, res, next) => {
 });
 
 // USER-PROFILE
-router.get('/profile', (req, res, next) => {
- User.findById(req.session.currentUser._id)
- .populate("pets")
+router.get("/profile", (req, res, next) => {
+  User.findById(req.session.currentUser._id)
+    .populate("pets")
     .then((userFound) => {
-      console.log(userFound)
-      res.render('user-profile', {user:userFound});
+      console.log(userFound);
+      res.render("user-profile", { user: userFound });
     })
     .catch((err) => next(err));
 });
 
-
-// PET-PROFILE
-/* router.get('/pet-profile',  (req, res, next) => {
-  res.render('pet-profile');
-});
- */
-
-// SIGN UP 
-router.get('/signup', (req, res, next) => {
-  res.render('auth/signup');
+// SIGN UP
+router.get("/signup", isLoggedOut, (req, res, next) => {
+  res.render("auth/signup");
 });
 
-router.post('/signup', (req, res, next) => {
+router.post("/signup", isLoggedOut, (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
-      res.render('auth/signup', { errorMessage: 'All fields are required' });
-    }
-    else{
-      bcrypt
+    res.render("auth/signup", { errorMessage: "All fields are required" });
+  } else {
+    bcrypt
       .genSalt(saltRounds)
       .then((salt) => {
         return bcrypt.hash(password, salt);
@@ -55,124 +51,225 @@ router.post('/signup', (req, res, next) => {
           passwordHash: hashedPassword,
         });
       })
-      .then(() => res.redirect('/profile'))
+      .then((user) => {
+        req.session.currentUser = user
+        req.app.locals.user = user
+        res.redirect("/profile")})
+    
       .catch((err) => {
         if (err instanceof mongoose.Error.ValidationError) {
-          res.status(500).redirect('/signup', { errorMessage: err.message });
+          res.status(500).redirect("/signup", { errorMessage: err.message });
         } else if (err.code === 11000) {
-          res.status(500).render('auth/signup', {
-            errorMessage:
-              'Username needs to be unique.',
+          res.status(500).render("auth/signup", {
+            errorMessage: "Username needs to be unique.",
           });
         } else {
           next(err);
         }
       });
-    }
-   
+  }
 });
 
 // LOGIN
-router.get('/login', (req, res, next) => res.render('auth/login'));
+router.get("/login", (req, res, next) => res.render("auth/login"));
 
-router.post('/login',  (req, res, next) => {
+router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    res.render('auth/login', { errorMessage: 'All fields are required' });
+    res.render("auth/login", { errorMessage: "All fields are required" });
     return;
   }
 
   User.findOne({ username })
     .then((user) => {
       if (!user) {
-        res.render('auth/login', { errorMessage: 'User not found' });
+        res.render("auth/login", { errorMessage: "User not found" });
         return;
       } else if (bcrypt.compareSync(password, user.passwordHash)) {
-          req.session.currentUser = user;
-          req.app.locals.currentUser = user; 
+        req.session.currentUser = user;
+        req.app.locals.user = user;
 
         console.log(req.session);
-        res.redirect('/profile');
+        res.redirect("/profile");
       } else {
-        res.render('auth/login', { errorMessage: 'Incorrect password' });
+        res.render("auth/login", { errorMessage: "Incorrect password" });
       }
     })
     .catch((err) => next(err));
-}); 
+});
 
-
-router.get('/logout', (req, res, next) => {
+router.get("/logout", (req, res, next) => {
+  req.app.locals.user = null
   req.session.destroy((err) => {
     if (err) next(err);
-    res.redirect('/');
+    res.redirect("/");
   });
 });
 
+//EDIT USER PROFILE
+
+/* router.get("/user/:id/edit", (req, res, next) => {
+  const { id } = req.params;
+  User.findById(id)
+    .then((user) => res.render("edit-profile", { user }))
+
+    .catch((err) => next(err));
+});
+
+router.post("/user/:id/edit", (req, res, next) => {
+  const { id } = req.params;
+  const { username } = req.body;
+
+  User.findByIdAndUpdate(id, { username })
+    .then((user) => res.redirect("/profile"))
+    .catch((err) => next(err));
+});
+ */
+
 
 //PET routes
-//Add a pet 
 
-router.get("/add-pet", (req, res, next) => 
-  User.find()
-    .then((users) => res.render("add-pet", {users}))
-    );
+//Add a pet
 
-    router.post("/add-pet", (req, res, next) => {
-     const userId = req.session.currentUser._id
+router.get("/add-pet", (req, res, next) =>
+  User.find().then((users) => res.render("add-pet", { users }))
+);
 
-      const { name } = req.body;
-      Pet.create({ name, humans:userId })
-        .then((createdPet) => {
-            console.log(createdPet)
-       return User.findByIdAndUpdate(userId, {$push: {pets:createdPet._id}}, {new:true})
-        .then((updatedUser) => {
-          res.redirect('/profile');
+router.post("/add-pet", (req, res, next) => {
+  const userId = req.session.currentUser._id;
+
+  const { name } = req.body;
+  Pet.create({ name, humans: userId })
+    .then((createdPet) => {
+      console.log(createdPet);
+      return User.findByIdAndUpdate(
+        userId,
+        { $push: { pets: createdPet._id } },
+        { new: true }
+      ).then((updatedUser) => {
+        res.redirect("/profile");
+      });
+    })
+
+    .catch((err) => res.redirect("/add-pet"));
+});
+
+// EDIT PET
+
+router.get("/pet/:id/edit", (req, res, next) => {
+  const { id } = req.params;
+  Pet.findById(id)
+    .then((pet) => res.render("edit-pet", { pet }))
+
+    .catch((err) => next(err));
+});
+
+router.post("/pet/:id/edit", async (req, res, next) => {
+  const { id } = req.params;
+  const { name, newHuman, removeHuman } = req.body;
+  let newUser;
+  let deletedUser;
+  let pet = await Pet.findById(id);
+
+  if (removeHuman && removeHuman.length > 0){
+    deletedUser = await User.findOne({ username: removeHuman});
+  }
+
+  if (deletedUser){
+    User.findByIdAndUpdate(deletedUser._id, { $pull: { pets: pet._id } })
+      .then(() => {
+        return Pet.findByIdAndUpdate(id, {
+          name,
+          $pull: { humans: deletedUser._id },
         })
-        })
-
-        .catch((err) => res.redirect('/add-pet'));
-    });
-  
-    // EDIT PET
-
-    router.get('/pet/:id/edit', (req, res, next) => {
-      const { id } = req.params;
-      Pet.findById(id)
-        .then((pet) =>  res.render('edit-pet', {pet}))
-      
-        .catch((err) => next(err));
-    });
-
-    router.post('/pet/:id/edit', (req, res, next) => {
-      const { id } = req.params;
-      const { name} = req.body;
-    
-      Pet.findByIdAndUpdate(id, { name })
-        .then((pet) => res.redirect('/profile'))
-        .catch((err) => next(err));
-    });
-    
-    //DELETE PET
-  router.post('/pet/:id/delete', (req, res, next) => {
-    console.log("getting here")
-    const { id } = req.params;
-    console.log("to be deleted", id)
-    Pet.findByIdAndRemove(id)
-      .then(() => res.redirect('/profile'))
+          .then((pet) => res.redirect("/profile"))
+          .catch((err) => next(err));
+      })
       .catch((err) => next(err));
-  });
+  }
 
-    //PET PORFILE WITH ID 
-    router.get('/pet-profile/:id', (req, res, next) => {
-      const { id } = req.params;
-      Pet.findById(id)
-      .populate("humans")
-        .then((pet) => {
-          res.render('pet-profile', pet );
+  if (newHuman && newHuman.length > 0) {
+    newUser = await User.findOne({ username: newHuman });
+  }
+
+  if (
+    newUser &&
+    pet.humans.filter((human) => human.str === newUser._id.str).length === 0
+  ) {
+    User.findByIdAndUpdate(newUser._id, { $push: { pets: pet._id } })
+      .then(() => {
+        return Pet.findByIdAndUpdate(id, {
+          name,
+          $push: { humans: newUser._id },
         })
-        .catch((err) => next(err));
-    });
+          .then((pet) => res.redirect("/profile"))
+          .catch((err) => next(err));
+      })
+      .catch((err) => next(err));
+  }
 
+  Pet.findByIdAndUpdate(id, { name })
+    .then((pet) => res.redirect("/profile"))
+    .catch((err) => next(err));
+});
+
+//DELETE PET
+router.post("/pet/:id/delete", (req, res, next) => {
+  console.log("getting here");
+  const { id } = req.params;
+  /* console.log("to be deleted", id); */
+  Pet.findByIdAndRemove(id)
+    .then(() => res.redirect("/profile"))
+    .catch((err) => next(err));
+});
+
+//PET PORFILE WITH ID
+router.get("/pet-profile/:id", (req, res, next) => {
+  const { id } = req.params;
+  Pet.findById(id)
+    .populate("humans")
+    .populate("tasks")
+    .then((pet) => {
+      console.log(pet)
+      res.render("pet-profile", pet);
+    })
+    .catch((err) => next(err));
+});
+
+
+//ADD TASK
+
+router.post("/pet-profile/:id", (req, res, next) => {
+  const { id } = req.params;
+  const { content } = req.body;
+  Task.create ({content})
+     .then((createdTask) => {
+      console.log(createdTask);
+      return Pet.findByIdAndUpdate(
+        id,
+        { $push: { tasks: createdTask._id } },
+        { new: true })
+        .then((pet) => {
+        res.redirect(`/pet-profile/${id}`);
+      });
+    })
+
+    .catch((err) => res.redirect(`/pet-profile/${id}`));
+});
+
+//DELETE TASK 
+
+/* router.post("/pet-profile/:id", async (req, res, next) => {
+ console.log("getting here");
+  const { id } = req.params;
+  const { content } = req.body;
+  let deletedTask;
+  let pet = await Pet.findById(id);
+  console.log("to be deleted", id);
+  Pet.findByIdAndUpdate(deletedTask._id, { $pull: { tasks: tasks._id } })
+    .then(() => res.redirect("/pet-profile/${id}"))
+    .catch((err) => next(err));
+}); */
+ 
 module.exports = router;
-

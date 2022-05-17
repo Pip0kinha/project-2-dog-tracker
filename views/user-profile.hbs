@@ -1,18 +1,24 @@
 <h1>{{user.username}} Profile</h1>
-<img src="{{user.imageUrl}}" alt="user photo" style="width: 60px;px;height: 60px;px;">
+{{!--  <a href='/user/{{user._id}}/edit'> --}}
+ 
+ <img src="{{user.imageUrl}}" alt="user photo" style="width: 60px;px;height: 60px;px;">
+ 
+{{!--  </a> --}}
 
-  <p>Welcome {{user.username}}</p>
 
 <h2>Your Pets</h2>
+  <a class="button-34" role="button"href='/add-pet'>Add a Pet </a>
 {{#if user.pets}}
 {{#each user.pets}}
 <h3>{{this.name}}</h3>
  <a href='/pet-profile/{{_id}}'> <img src="{{this.imageUrl}}" alt="pet photo" style="width: 60px;px;height: 60px;px;"> </a>
 <br>
-<a href= '/pet/{{_id}}/edit'> Edit pet</a>
-
+<br>
+<a class="button-34" role="button" href= '/pet/{{_id}}/edit'> Edit pet</a>
+<br>
+<br>
 <form action='/pet/{{_id}}/delete' method='post'>
-  <button type='submit'>Delete</button>
+  <button class="button-34" role="button" type='submit'>Delete</button>
 </form>
 
 

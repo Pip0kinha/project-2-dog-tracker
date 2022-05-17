@@ -6,36 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{{appTitle}}</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
-   {{!--  <link rel="stylesheet" href="/stylesheets/style-todo.css" /> --}}
+
   </head>
 
   <body>
  <nav>
       <ul>
         <ul id='to-right'>
-          {{#if user}}
-             {{!-- |
-            <a href='/edit-profile'>Edit Profile</a> --}}
-            |
-            <a href='/add-pet'>Add a Pet </a>
+         {{#if user}}
+          
            {{!--  |
             <a href='/delete'>Delete Profile</a> --}}
             |
             <a href='/logout'>Logout</a>
   
-          {{else}}
+       {{else}}
             <a href='/signup'>Signup</a>
             |
             <a href='/login'>Login</a>
-          {{/if}}
-
-        </ul>
+         {{/if}}
       </ul>
     </nav>
 
     {{{body}}}
 
     <script src="/js/script.js"></script>
+
   </body>
 
 </html>

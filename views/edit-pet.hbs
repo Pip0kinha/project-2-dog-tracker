@@ -3,6 +3,15 @@
    <label> Name
       <input type="text" name="name" value='{{pet.name}}'>
    </label>
+   <br>
+<label> Add a Human
+      <input type="text" name="newHuman">
+   </label>
+   <br>
+<label> Remove a Human
+      <input type="text" name="removeHuman">
+   </label>
+<br>
   {{!--  <label for="humans">Humans</label>
   <select name="humans" id="humans" multiple size="5">
       {{#each users}}
@@ -10,7 +19,7 @@
   {{/each}}
 </select> --}}
 
-   <button type="submit">Submit</button>
+   <button class="button-34" role="button" type="submit">Submit</button>
 </form>
 
 {{#if errorMessage}}
