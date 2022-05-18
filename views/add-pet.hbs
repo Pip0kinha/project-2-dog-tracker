@@ -1,19 +1,54 @@
 
-<h1>Add Pet</h1>
+{{!-- <h1>Add Pet</h1>
 <form action="/add-pet" method="POST">
    <label> Name
       <input type="text" name="name">
    </label>
-  {{!--  <label for="humans">Humans</label>
-  <select name="humans" id="humans" multiple size="5">
-      {{#each users}}
-  <option value={{this._id}}>{{this.username}}</option>
-  {{/each}}
-</select> --}}
 
    <button class="button-34" role="button" type="submit">Submit</button>
 </form>
 
 {{#if errorMessage}}
    {{errorMessage}}
+{{/if}} --}}
+
+{{! TEST NEW FORM }}
+<div id="add-pet">
+  <div id="add-pet-form-parent">
+    <h2>Add a pet <br /> to your profile</h2>
+
+    <form
+      action="/add-pet"
+      method="POST"
+    >
+      <div>
+        <div>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            placeholder="What is your pet's name?"
+          />
+        </div>
+      </div>
+      <br>
+      <div>
+      </div>
+      <div>
+        <div>
+        </div>
+      </div>
+      <div>
+         <br>
+         <br>
+        <div>
+          <button class="button-34" role="button" type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{{#if errorMessage}}
+  {{errorMessage}}
 {{/if}}

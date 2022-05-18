@@ -1,4 +1,4 @@
-<h1>{{pet.name}} Profile</h1>
+{{!-- <h1>{{pet.name}} Profile</h1>
 <br>
 
 <div>
@@ -29,5 +29,41 @@
   <button class="button-34" role="button" type='submit'>x</button>
 </form>
     </ul>
-     {{/each}}
+     {{/each}} --}}
 
+<div id="pet-profile">
+  <div id="pet-profile-firstDiv"> 
+    <img src="{{pet.imageUrl}}" alt="pet photo" style="width: 150x;px;height: 150px;px;">
+    <h1>{{pet.name}} Profile</h1>
+    <div id="pet-profile-secondDiv">
+     <h2>Humans:</h2>
+   {{#each pet.humans}}
+   <ul> 
+     <li>{{this.username}}</li>
+    </ul>
+     {{/each}}
+    </div>
+  </div>
+ <h2 id="h2-border">{{pet.name}}'s To Do List</h2>
+ <section id="pet-profile-todo-section"> 
+  <div id="pet-profile-todo-section-newTask"> 
+    <form action="/pet-profile/{{pet._id}}" method="POST">
+      <label> New Task
+        <input type="text" name="content">
+      </label>
+      <button class="button-34" role="button" type="submit">+</button>
+    </form>
+    <br>
+  </div>
+  <div id="pet-profile-todo-section-allTasks"> 
+    <h2>Current Tasks:</h2>
+    {{#each pet.tasks}}
+      <ul> 
+        <li>{{content}}</li>
+        <form action='/pet-profile/{{@root.pet._id}}/tasks/{{_id}}/delete' method='post'>
+          <button class="button-34" role="button" type='submit'>x</button>
+        </form>
+      </ul>
+    {{/each}}
+    </div>
+  </section>

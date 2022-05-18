@@ -1,32 +1,36 @@
+
 <div id="user-profile">
-<div id="user-profile-firstDiv"> 
-<img src="{{user.imageUrl}}" alt="user photo" style="width: 120x;px;height: 120px;px;">
-<h1>{{user.username}} Profile</h1>
-</div>
-{{!--  <a href='/user/{{user._id}}/edit'> --}}
- 
- 
- 
-{{!--  </a> --}}
+  <div id="user-profile-firstDiv"> 
+    <img src="{{user.imageUrl}}" alt="user photo" style="width: 150x;px;height: 120px;px;">
+    <h1>{{user.username}} Profile</h1>
+    <div id="user-profile-secondDiv">
+      <a class="button-34" role="button"href='/add-pet'>Add a Pet </a>
+    </div>
+  </div>
 
+  <h2>Your Pets</h2>
+  <section id="pet-section"> 
+    <div id="pet-section-firstDiv"> 
+      {{#if user.pets}}
+        {{#each user.pets}}
+          <div id="pet-section-secondDiv"> 
+          <h3>{{this.name}}</h3>
+          <a href='/pet-profile/{{_id}}'> <img src="{{this.imageUrl}}" alt="pet photo" style="width: 160px;px;height: 160px;px;"> </a>
+          <br>
+          <br>
+          <a id="pet-section-secondDiv-button" class="button-34" role="button" href= '/pet/{{_id}}/edit'>Edit {{this.name}}</a>
+          <br>
+          <br>
+          <form action='/pet/{{_id}}/delete' method='post'>
+          <button id="pet-section-secondDiv-button" class="button-34" role="button" type='submit'>Remove {{this.name}}</button>
+          </form>
+          </div>
+        {{/each}}
+      {{/if}}
+      </div>
+       
+    </section>
 
-<h2>Your Pets</h2>
-  <a class="button-34" role="button"href='/add-pet'>Add a Pet </a>
-{{#if user.pets}}
-{{#each user.pets}}
-<h3>{{this.name}}</h3>
- <a href='/pet-profile/{{_id}}'> <img src="{{this.imageUrl}}" alt="pet photo" style="width: 90px;px;height: 90px;px;"> </a>
-<br>
-<br>
-<a class="button-34" role="button" href= '/pet/{{_id}}/edit'> Edit pet</a>
-<br>
-<br>
-<form action='/pet/{{_id}}/delete' method='post'>
-  <button class="button-34" role="button" type='submit'>Delete</button>
-</form>
-
-
- {{/each}}
- {{/if}}
+   
 
 </div>

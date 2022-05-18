@@ -1,4 +1,4 @@
-<h1>Edit Pet</h1>
+{{!-- <h1>Edit Pet</h1>
 <form action="/pet/{{pet.id}}/edit" method="POST">
    <label> Name
       <input type="text" name="name" value='{{pet.name}}'>
@@ -12,16 +12,70 @@
       <input type="text" name="removeHuman">
    </label>
 <br>
-  {{!--  <label for="humans">Humans</label>
-  <select name="humans" id="humans" multiple size="5">
-      {{#each users}}
-  <option value={{this._id}}>{{this.username}}</option>
-  {{/each}}
-</select> --}}
-
    <button class="button-34" role="button" type="submit">Submit</button>
 </form>
 
 {{#if errorMessage}}
    {{errorMessage}}
+{{/if}} --}}
+
+{{! TEST NEW FORM }}
+<div id="edit-pet">
+  <div id="edit-pet-form-parent">
+    <h2>Edit {{pet.name}}'s profile. <br />Add and remove humans</h2>
+
+    <form
+      action="/pet/{{pet.id}}/edit"
+      method="POST"
+    >
+      <div>
+        <div>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            value='{{pet.name}}'
+            {{!-- placeholder="Did you re-name your pet?" --}}
+          />
+        </div>
+      </div>
+      <br>
+      <div>
+        <div>
+          <input
+            type="text"
+            class="form-control"
+            name="newHuman"
+            placeholder="Add a human from this Pet's profile"
+          />
+        </div>
+      </div>
+      <br>
+      <div>
+        <div>
+          <input
+            type="text"
+            class="form-control"
+            name="removeHuman"
+            placeholder="Remove a human from this Pet's profile"
+          />
+        </div>
+      </div>
+      <div>
+        <div>
+        </div>
+      </div>
+      <div>
+         <br>
+         <br>
+        <div>
+          <button class="button-34" role="button" type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{{#if errorMessage}}
+  {{errorMessage}}
 {{/if}}
