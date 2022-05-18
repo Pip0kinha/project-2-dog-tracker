@@ -126,19 +126,19 @@ h3 {
 #user-profile-firstDiv {
   display: flex;
   margin: 50px;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 #user-profile-firstDiv h1 {
   padding-left: 30px;
 }
 
-#user-profile-secondDiv  {
-padding: 30px;
-padding-top: 45px;
- }
+#user-profile-secondDiv {
+  padding: 30px;
+  padding-top: 45px;
+}
 
 #user-profile-secondDiv a {
-margin-top: 80px;
+  margin-top: 80px;
 }
 
 #user-profile h2 {
@@ -147,23 +147,20 @@ margin-top: 80px;
 }
 
 #pet-section {
-
   margin: 50px;
-  
 }
 
 #pet-section-firstDiv {
   display: flex;
-  justify-content:space-evenly
- 
+  justify-content: space-evenly;
 }
 
- #pet-section-secondDiv-button {
+#pet-section-secondDiv-button {
+  display: block;
   font-size: 12px;
   font-weight: 700;
   line-height: 21px;
   padding: 4px 14px;
- 
 }
 
 /* PET PROFILE  */
@@ -175,55 +172,50 @@ margin-top: 80px;
 #pet-profile-firstDiv {
   display: flex;
   margin: 50px;
-  justify-content:space-between;
+  justify-content: space-between;
   margin-bottom: 0px;
-  
 }
 #pet-profile-firstDiv h1 {
   padding-left: 30px;
 }
 
-#pet-profile-secondDiv  {
-padding: 30px;
-
- }
+#pet-profile-secondDiv {
+  padding: 30px;
+}
 
 #pet-profile-secondDiv a {
-margin-top: 80px;
+  margin-top: 80px;
 }
 
 #pet-profile h2 {
-font-size: 30px;
-margin-bottom: 30px;
-text-align:left;
-margin-left: 50px;
-
+  font-size: 30px;
+  margin-bottom: 30px;
+  text-align: left;
+  margin-left: 50px;
 }
 
-#h2-border{
+#h2-border {
   padding-bottom: 30px;
   border-bottom-style: solid;
   border-color: #7209b7;
   border-width: 8px;
 }
 
-
 #pet-profile-todo-section {
-display: flex;
-justify-content:left
+  display: flex;
+  justify-content: left;
 }
 
-#pet-profile-todo-section-newTask{
+#pet-profile-todo-section-newTask {
   margin-left: 50px;
   margin-right: 300px;
-
 }
 #pet-profile-todo-section-allTasks {
-/* width: 600px; */
-align-items:flex-start;
-border-left-style: solid;
-border-color: #7209b7;
-border-width: 8px;
+  /* width: 600px; */
+  align-items: flex-start;
+  border-left-style: solid;
+  border-color: #7209b7;
+  border-width: 8px;
 }
 /* SIGN UP  */
 
@@ -255,8 +247,6 @@ border-width: 8px;
     -webkit-box-shadow 0.15s ease-in-out;
 }
 
-
-
 #signup {
   display: flex;
   padding: 150px;
@@ -268,7 +258,7 @@ border-width: 8px;
   width: 60%;
 }
 
-#signup h2{
+#signup h2 {
   font-size: 40px;
 }
 
@@ -279,7 +269,6 @@ border-width: 8px;
   padding: 100px;
   padding-right: 40px;
   padding-left: 150px;
-  
 }
 
 #login-form-parent {
@@ -287,7 +276,7 @@ border-width: 8px;
   width: 60%;
 }
 
-#login h2{
+#login h2 {
   font-size: 40px;
   border-top-style: solid;
   border-color: #7209b7;
@@ -298,7 +287,6 @@ border-width: 8px;
 
 #login-form-parent img {
   width: 800px;
-
 }
 
 /* ADD PET  */
@@ -307,7 +295,7 @@ border-width: 8px;
   display: flex;
   padding: 246px;
   padding-right: 40px;
-  background: url(/images/pet-5.png) no-repeat center center fixed; 
+  background: url(/images/pet-5.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -321,7 +309,7 @@ border-width: 8px;
   margin-left: 190px;
 }
 
-#add-pet h2{
+#add-pet h2 {
   font-size: 40px;
 }
 
@@ -331,7 +319,7 @@ border-width: 8px;
   display: flex;
   padding: 200px;
   padding-right: 40px;
-  background: url(/images/pet-5.png) no-repeat center center fixed; 
+  background: url(/images/pet-5.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -345,6 +333,6 @@ border-width: 8px;
   margin-left: 210px;
 }
 
-#edit-pet h2{
+#edit-pet h2 {
   font-size: 40px;
 }

@@ -8,6 +8,7 @@ const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 const Task = require("../models/Task.model");
 const saltRounds = 10;
+const fileUploader = require("../config/cloudinary.config");
 
 //HOME
 router.get("/", (req, res, next) => {
@@ -164,55 +165,64 @@ router.get("/pet/:id/edit", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.post("/pet/:id/edit", async (req, res, next) => {
-  const { id } = req.params;
-  const { name, newHuman, removeHuman } = req.body;
-  let newUser;
-  let deletedUser;
-  let pet = await Pet.findById(id);
+router.post(
+  "/pet/:id/edit",
+  fileUploader.single("pet-img"),
+  async (req, res, next) => {
+    const { id } = req.params;
+    const { name, newHuman, removeHuman } = req.body;
+    let imageUrl;
+    let newUser;
+    let deletedUser;
+    let pet = await Pet.findById(id);
 
-  if (removeHuman && removeHuman.length > 0) {
-    deletedUser = await User.findOne({ username: removeHuman });
-  }
+    if (req.file && req.file.path) {
+      imageUrl = req.file.path;
+    }
 
-  if (deletedUser) {
-    User.findByIdAndUpdate(deletedUser._id, { $pull: { pets: pet._id } })
-      .then(() => {
-        return Pet.findByIdAndUpdate(id, {
-          name,
-          $pull: { humans: deletedUser._id },
+    if (removeHuman && removeHuman.length > 0) {
+      deletedUser = await User.findOne({ username: removeHuman });
+    }
+
+    if (deletedUser) {
+      User.findByIdAndUpdate(deletedUser._id, { $pull: { pets: pet._id } })
+        .then(() => {
+          return Pet.findByIdAndUpdate(id, {
+            name,
+            $pull: { humans: deletedUser._id },
+          })
+            .then((pet) => res.redirect("/profile"))
+            .catch((err) => next(err));
         })
-          .then((pet) => res.redirect("/profile"))
-          .catch((err) => next(err));
-      })
+        .catch((err) => next(err));
+    }
+
+    if (newHuman && newHuman.length > 0) {
+      newUser = await User.findOne({ username: newHuman });
+    }
+
+    if (
+      newUser &&
+      pet.humans.filter((human) => human.toString() === newUser._id.toString())
+        .length === 0
+    ) {
+      User.findByIdAndUpdate(newUser._id, { $push: { pets: pet._id } })
+        .then(() => {
+          return Pet.findByIdAndUpdate(id, {
+            name,
+            $push: { humans: newUser._id },
+          })
+            .then((pet) => res.redirect("/profile"))
+            .catch((err) => next(err));
+        })
+        .catch((err) => next(err));
+    }
+
+    Pet.findByIdAndUpdate(id, { name, imageUrl })
+      .then((pet) => res.redirect("/profile"))
       .catch((err) => next(err));
   }
-
-  if (newHuman && newHuman.length > 0) {
-    newUser = await User.findOne({ username: newHuman });
-  }
-
-  if (
-    newUser &&
-    pet.humans.filter((human) => human.toString() === newUser._id.toString())
-      .length === 0
-  ) {
-    User.findByIdAndUpdate(newUser._id, { $push: { pets: pet._id } })
-      .then(() => {
-        return Pet.findByIdAndUpdate(id, {
-          name,
-          $push: { humans: newUser._id },
-        })
-          .then((pet) => res.redirect("/profile"))
-          .catch((err) => next(err));
-      })
-      .catch((err) => next(err));
-  }
-
-  Pet.findByIdAndUpdate(id, { name })
-    .then((pet) => res.redirect("/profile"))
-    .catch((err) => next(err));
-});
+);
 
 //DELETE PET
 router.post("/pet/:id/delete", (req, res, next) => {

@@ -27,6 +27,7 @@
     <form
       action="/pet/{{pet.id}}/edit"
       method="POST"
+      enctype="multipart/form-data"
     >
       <div>
         <div>
@@ -34,12 +35,12 @@
             type="text"
             class="form-control"
             name="name"
-            value='{{pet.name}}'
-            {{!-- placeholder="Did you re-name your pet?" --}}
+            value="{{pet.name}}"
+            {{! placeholder="Did you re-name your pet?" }}
           />
         </div>
       </div>
-      <br>
+      <br />
       <div>
         <div>
           <input
@@ -50,7 +51,7 @@
           />
         </div>
       </div>
-      <br>
+      <br />
       <div>
         <div>
           <input
@@ -62,12 +63,17 @@
         </div>
       </div>
       <div>
+        <br />
         <div>
+          <div>
+            <input type="file" name="pet-img" />
+          </div>
         </div>
+
       </div>
       <div>
-         <br>
-         <br>
+        <br />
+        <br />
         <div>
           <button class="button-34" role="button" type="submit">Submit</button>
         </div>
