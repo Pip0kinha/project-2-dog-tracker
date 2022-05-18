@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
 
+/* ALL  */
+
 body {
   /*   padding: 50px; */
   font-family: "Varela Round", sans-serif;
@@ -70,6 +72,8 @@ h3 {
   border: 0;
 }
 
+/* HOME  */
+
 #home {
   height: 100%;
   display: flex;
@@ -110,6 +114,8 @@ h3 {
   font-size: 18px;
 }
 
+/* USER PROFILE  */
+
 #user-profile h1 {
   font-size: 50px;
 }
@@ -122,9 +128,11 @@ h3 {
   padding-left: 30px;
 }
 
+/* SIGN UP  */
+
 .form-control {
   border: none;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid #f1f7ed;
   padding-left: 0;
   padding-right: 0;
   border-radius: 0;
@@ -135,7 +143,7 @@ h3 {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #495057;
+  color: #727072;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
@@ -150,9 +158,12 @@ h3 {
     -webkit-box-shadow 0.15s ease-in-out;
 }
 
+
+
 #signup {
   display: flex;
   padding: 150px;
+  padding-right: 40px;
 }
 
 #signup-form-parent {
@@ -164,10 +175,3 @@ h3 {
   font-size: 40px;
 }
 
-#signup-side-text {
-  padding-top: 30px;
-}
-
-#signup-side-text p {
-  padding-right: 180px;
-}

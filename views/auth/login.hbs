@@ -1,4 +1,4 @@
-<h1>LOG IN</h1>
+{{!-- <h1>LOG IN</h1>
 <form action="/login" method="POST">
    <label> Username
       <input type="text" name="username">
@@ -12,4 +12,56 @@
 
 {{#if errorMessage}}
    {{errorMessage}}
+{{/if}} --}}
+
+{{! TEST NEW FORM }}
+<div id="signup">
+  <div id="signup-form-parent">
+    <h2>Welcome back!<br />Login</h2>
+
+    <form
+      action="/login"
+      method="POST"
+    >
+      <div>
+        <div>
+          <input
+            type="text"
+            class="form-control"
+            name="username"
+            placeholder="Username"
+          />
+        </div>
+      </div>
+      <br>
+      <div>
+        <div>
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            placeholder="Password"
+          />
+        </div>
+      </div>
+      <div>
+        <div>
+        </div>
+      </div>
+      <div>
+         <br>
+         <br>
+        <div>
+          <button class="button-34" role="button" type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="signup-side">
+      <img src="/images/pets-1.png" alt="">
+  </div>
+</div>
+
+{{#if errorMessage}}
+  {{errorMessage}}
 {{/if}}
