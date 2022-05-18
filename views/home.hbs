@@ -16,7 +16,11 @@
     </p>
     <br>
     <div id="home-div-button"> 
-  <a id="home-a" class="button-34" role="button" href='/signup'>Join Now</a>
+      {{#if user}}
+      <a id="home-a" class="button-34" href='/profile'>Your Profile</a>
+      {{else}}
+  <a id="home-a" class="button-34" href='/signup'>Join Now</a>
+  {{/if}}
  {{!--  <a class="button-34" role="button" href='/login'>Login</a> --}}
   </div>
    </div>
